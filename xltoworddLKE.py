@@ -1,5 +1,4 @@
 #pyinstaller --onefile xltoword.py cd C:\Users\IMatveev\PycharmProjects\wordchanche\
-# правильный наташин
 import os
 import zipfile
 import re
@@ -12,6 +11,7 @@ import docx #pip install python-docx
 import shutil
 import datetime
 import time
+from functions import update_word_table
 
 print(os.environ.get( "USERNAME" ))
 def run_macro(name, new_value):
@@ -99,6 +99,8 @@ for region in regions['regions']:
                         tx = str(tx).replace(".", ",")
                     except:
                         asd = 0
+                    if found == "{8}":
+                        data_var = tx
                     # для работы с цветами
                     # col = df[df["metka"] == found]["color"].values[0]#df[df["metka"] == found]["color"].to_string(header=False, index=False)
                     # if col == "NaN" or col == "FFFFFF" or col == "":
@@ -134,4 +136,10 @@ for region in regions['regions']:
         asd = 1
     os.rename(pathwork + "/B.zip", pathwork + "/" + name + ".docx")
     shutil.rmtree(pathwork + "/B/")
+
+    #data_var = "S(t) - численность на начало года t; B(t) - число родившихся в году t; M(t) - число умерших в году t; U(t) - число прибывших на данную территорию (в данный субъект Российской Федерации) в году t; V(t) - число выбывших с данной территории (из данного субъекта Российской Федерации) в году t; T(t) - изменение численности населения территории в результате изменения ее границ в году t."
+    #units_var = "человек; человек; процентов; процентов; процентов; процентов;"
+    #doc_path = "1.docx"
+
+    update_word_table(doc_path, data_var, units_var)
     print("FINISH", region)
